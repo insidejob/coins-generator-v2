@@ -78,6 +78,8 @@ You need to tell Virtuoso which window to look in - that's what these "Switch to
 
 That's it! This one question solves 90% of iframe issues.
 
+📸 **[See Real Visual Examples Here](./COINS_IFRAME_VISUAL_EXAMPLES.md)** - Screenshots showing exactly what to look for!
+
 ## 🎯 Super Quick Checkpoint Finder
 
 ```

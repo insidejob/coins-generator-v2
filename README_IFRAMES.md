@@ -4,9 +4,11 @@
 
 **Start Here:** [COINS Iframe Guide for Business Users](./COINS_IFRAME_GUIDE_FOR_BUSINESS_USERS.md)
 
+**📸 NEW:** [Visual Examples with Real Screenshots](./COINS_IFRAME_VISUAL_EXAMPLES.md) - See exactly what to look for!
+
 This guide contains everything you need to know about handling COINS windows/frames in Virtuoso, including:
 - Simple identification rules
-- Visual examples
+- Visual examples with actual COINS screenshots
 - Troubleshooting steps
 - Quick reference cards
 
