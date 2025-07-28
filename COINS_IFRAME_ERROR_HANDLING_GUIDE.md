@@ -12,10 +12,10 @@
 ```
 html > body > iframe#mainarea > #document > ... > iframe#getFrame > #document > ... > input#Surname
                 ↑                                      ↑
-           First frame                            Second frame
+           COINS Main Area                      COINS Working Area
 ```
 
-This means you need: `mainarea > getFrame` to reach the element.
+This means you need: COINS is displaying your element inside two nested windows.
 
 ### Even Simpler: The Highlight Method
 
@@ -25,6 +25,16 @@ $0.style.border = "5px solid red"
 ```
 2. Click on different iframes in the Elements panel
 3. When the red border appears around your element, note which iframes you clicked through
+
+## What These Frame Names Mean in COINS
+
+| Technical Name | What It Is in COINS | When You See It |
+|----------------|-------------------|-----------------|
+| **getFrame** | COINS Working Area | Main content area where you do your work |
+| **Dialog Frame** | COINS Pop-up Window | Reservation forms, add/edit screens |
+| **Desktop Frame** | COINS Nested Pop-up | Pop-ups inside pop-ups (like Add Choice) |
+| **active inlineframe** | COINS Data Grid | Filtered lists, search results |
+| **mainarea** | COINS Container | The overall COINS workspace |
 
 ## Common Iframe Errors and Solutions
 
@@ -44,11 +54,11 @@ Write "Sur" in field input "Surname"  // FAILS - Element not found
 
 **Solution**:
 ```javascript
-// Add wait after frame switch
+// Add wait after opening COINS pop-up
 Click on "New Reservation"
-SYS: Switch to Dialog Frame
-Wait 2 seconds  // Allow frame to load
-Look for element "Surname" on page  // Verify correct frame
+SYS: Switch to Dialog Frame  // Switch to COINS Pop-up Window
+Wait 2 seconds  // Allow pop-up to load
+Look for element "Surname" on page  // Verify correct window
 Write "Sur" in field input "Surname"
 ```
 
@@ -96,24 +106,24 @@ SYS: Switch to Dialog Frame  // Re-establish after save
 1. **Add a Wait**
 ```
 Click on "New Reservation"
-Wait 2 seconds  // Give modal time to open
-SYS: Switch to Dialog Frame
+Wait 2 seconds  // Give COINS pop-up time to open
+SYS: Switch to Dialog Frame  // Enter COINS Pop-up Window
 ```
 
 2. **Look for the Element First**
 ```
 Click on "New Reservation"
-Look for element "Continue Reservation" on page  // Verify modal opened
+Look for element "Continue Reservation" on page  // Verify pop-up opened
 Click on "Continue Reservation"
-SYS: Switch to Dialog Frame
+SYS: Switch to Dialog Frame  // Enter COINS Pop-up Window
 ```
 
 3. **If Still Failing, Try Multiple Waits**
 ```
 Click on "Update Incentive"
 Wait 1 second
-SYS: Switch to Dialog Frame
-Wait 1 second  // Additional wait after switch
+SYS: Switch to Dialog Frame  // Enter COINS Pop-up Window
+Wait 1 second  // Let COINS finish loading
 Write "500" in field "Value"
 ```
 
@@ -135,9 +145,9 @@ Write "500" in field "Value"
 
 2. **The URL Check**
    - Look at your browser URL
-   - `/browse/` = Browse screen (needs getFrame)
-   - `/edit/` = Edit form (needs Dialog Frame)
-   - `/add/` = Add form (needs Dialog Frame)
+   - `/browse/` = COINS Browse screen (needs Working Area)
+   - `/edit/` = COINS Edit form (needs Pop-up Window)
+   - `/add/` = COINS Add form (needs Pop-up Window)
 
 ## Simple Recovery Steps
 
@@ -145,21 +155,21 @@ Write "500" in field "Value"
 
 1. **Close and Start Over**
 ```
-// If modal seems broken
+// If COINS pop-up seems broken
 Click on "Cancel" or "Close"
 Wait 2 seconds
-// Try opening modal again
+// Try opening pop-up again
 Click on "New Reservation"
 Look for element "Continue Reservation" on page
 Click on "Continue Reservation"
-SYS: Switch to Dialog Frame
+SYS: Switch to Dialog Frame  // Enter COINS Pop-up Window
 ```
 
 2. **Return to Main Screen**
 ```
 // If completely lost
 Click on "House Sales" in menu  // Return to module home
-SYS: Switch to getFrame
+SYS: Switch to getFrame  // Enter COINS Working Area
 // Start your journey again
 ```
 
@@ -216,11 +226,11 @@ Look for element "Cancel" on page
 
 | Error Message | Likely Cause | Solution |
 |--------------|--------------|----------|
-| "Element not found: Surname" | Wrong frame | Add frame switch before |
-| "Cannot read property of null" | Frame not loaded | Add wait after switch |
-| "Frame not found: desktopDialog" | Modal not open | Wait for modal to open |
-| "Stale element reference" | Frame context changed | Re-establish frame |
-| "Timeout waiting for element" | Wrong frame or slow load | Check frame + increase wait |
+| "Element not found: Surname" | Wrong COINS window | Add frame switch before |
+| "Cannot read property of null" | COINS window not loaded | Add wait after switch |
+| "Frame not found: desktopDialog" | COINS pop-up not open | Wait for pop-up to open |
+| "Stale element reference" | COINS refreshed the window | Re-establish frame |
+| "Timeout waiting for element" | Wrong window or COINS slow | Check frame + increase wait |
 
 ## Real Example: Adding an Incentive
 
@@ -229,25 +239,25 @@ Here's how to handle frames when things go wrong:
 ```
 // What should happen:
 Click on "Update Incentive"
-SYS: Switch to Dialog Frame
+SYS: Switch to Dialog Frame  // Enter COINS Pop-up Window
 Write "500" in field "Value"
 Click on "Save"
 
 // If "Value" field not found, try this:
 Click on "Update Incentive"
-Wait 2 seconds  // Give modal time to open
-Look for element "Incentive Details" on page  // Verify right modal
-SYS: Switch to Dialog Frame
-Wait 1 second  // Let frame settle
+Wait 2 seconds  // Give COINS pop-up time to open
+Look for element "Incentive Details" on page  // Verify right pop-up
+SYS: Switch to Dialog Frame  // Enter COINS Pop-up Window
+Wait 1 second  // Let COINS finish loading
 Write "500" in field "Value"
 Click on "Save"
 
 // If still failing:
-Click on "Cancel"  // Close modal
+Click on "Cancel"  // Close COINS pop-up
 Wait 2 seconds
 Click on "Update Incentive"  // Try again
 Wait for element "Value" on page  // Wait for specific field
-SYS: Switch to Dialog Frame
+SYS: Switch to Dialog Frame  // Enter COINS Pop-up Window
 Write "500" in field "Value"
 Click on "Save"
 ```
