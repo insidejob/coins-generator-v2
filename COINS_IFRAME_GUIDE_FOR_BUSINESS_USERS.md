@@ -1,5 +1,13 @@
 # COINS Iframe Guide for Business Users
 
+## 🚀 Quick Answer Box
+
+**Background dimmed?** → Use `Checkpoint 13: SYS: Switch to Dialog Frame`  
+**Search boxes above table?** → Use `Checkpoint 29: SYS: Switch to getFrame + active inlineframe`  
+**Just a plain table?** → Use `Checkpoint 4: SYS: Switch to getFrame`
+
+---
+
 ## 📋 Table of Contents
 
 1. [What Are COINS Windows?](#what-are-coins-windows)
@@ -41,6 +49,26 @@ You need to tell Virtuoso which window to look in - that's what these "Switch to
 ```
 
 That's it! This one question solves 90% of iframe issues.
+
+## 🎯 Super Quick Checkpoint Finder
+
+```
+START HERE
+    │
+    ▼
+Is the background dimmed/grayed out?
+    │
+    ├─── YES ──→ Use: Checkpoint 13: SYS: Switch to Dialog Frame
+    │
+    └─── NO ───→ Continue
+                    │
+                    ▼
+            Can you type in boxes above the table?
+                    │
+                    ├─── YES ──→ Use: Checkpoint 29: SYS: Switch to getFrame + active inlineframe
+                    │
+                    └─── NO ───→ Use: Checkpoint 4: SYS: Switch to getFrame
+```
 
 ---
 
@@ -136,6 +164,37 @@ SYS: Switch to Dialog Frame
 - You saved a form (need to re-establish frame)
 - COINS is running slowly (add more waits)
 
+### ❌ Problem: "None of the standard methods work"
+
+**Emergency Troubleshooting:**
+
+1. **Take a screenshot** of what you see
+2. **Note these details:**
+   - What module are you in? (House Sales, Payroll, etc.)
+   - What are you trying to click? (button, link, field)
+   - What happened just before? (filtered, saved, opened popup)
+
+3. **Try the Universal Recovery:**
+```
+// Close all popups
+Click on "Cancel" or press ESC
+Wait 2 seconds
+
+// Return to main menu
+Click on module name in menu
+Wait 2 seconds
+
+// Start your journey again with correct frame
+SYS: Switch to getFrame
+```
+
+4. **If still stuck, try each checkpoint:**
+```
+First try: Checkpoint 4: SYS: Switch to getFrame
+If that fails: Checkpoint 29: SYS: Switch to getFrame + active inlineframe  
+If that fails: Checkpoint 13: SYS: Switch to Dialog Frame
+```
+
 ---
 
 ## Step-by-Step Troubleshooting
@@ -165,21 +224,41 @@ If still not working:
 └── Try closing and reopening
 ```
 
-### 🛠️ How to Check Frame Structure Yourself
+### 🛠️ Easy Way to Find Which Frame You Need
 
-1. **Right-click** on the element you want
-2. Select **"Inspect"**
-3. Look at the breadcrumb at bottom of DevTools:
+#### Method 1: The Copy Test (Simplest)
+
+1. **Try to copy text** from the table:
+   - Right-click on any text in the table
+   - Select "Copy"
+   
+**If you CAN copy:** Simple table → Use `getFrame`  
+**If you CAN'T copy:** Complex grid → Use `getFrame + active inlineframe`
+
+#### Method 2: The DevTools Method
+
+1. **Press F12** to open DevTools
+2. **Click the Elements tab**
+3. **Press Ctrl+F** (or Cmd+F on Mac) to search
+4. **Search for:** `iframe`
+5. **Count how many results** you see
 
 ```
-If you see:
-mainarea > getFrame > YOUR ELEMENT
-→ Use simple pattern
-
-If you see:
-mainarea > getFrame > inlineframe > getFrame > YOUR ELEMENT
-→ Use complex pattern
+2 iframes found → Use: getFrame only
+4 iframes found → Use: getFrame + active inlineframe
 ```
+
+#### Method 3: Visual Check for Beginners
+
+Just answer these questions:
+
+1. **Is there a gray/dimmed background?**
+   - YES → It's a pop-up → Use `Dialog Frame`
+   - NO → Continue to question 2
+
+2. **Are there empty boxes above the table where I can type?**
+   - YES → It's a filtered grid → Use `getFrame + active inlineframe`
+   - NO → It's a simple table → Use `getFrame`
 
 ---
 
