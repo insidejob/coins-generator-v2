@@ -1,5 +1,31 @@
 # COINS Iframe Error Handling Guide
 
+## How to See Which Frame an Element Is In
+
+### Quick Method (Business Users):
+
+1. **Right-click** on the element you want to interact with
+2. Select **"Inspect"** or **"Inspect Element"**
+3. Look at the bottom of DevTools for the "breadcrumb trail"
+
+**What you'll see:**
+```
+html > body > iframe#mainarea > #document > ... > iframe#getFrame > #document > ... > input#Surname
+                ↑                                      ↑
+           First frame                            Second frame
+```
+
+This means you need: `mainarea > getFrame` to reach the element.
+
+### Even Simpler: The Highlight Method
+
+1. In DevTools Console, type:
+```javascript
+$0.style.border = "5px solid red"
+```
+2. Click on different iframes in the Elements panel
+3. When the red border appears around your element, note which iframes you clicked through
+
 ## Common Iframe Errors and Solutions
 
 ### 1. Element Not Found After Frame Switch
@@ -54,228 +80,95 @@ SYS: Switch to Dialog Frame  // Now safe to switch
 - Assuming frame context persists
 
 **Solution**:
-```javascript
+```
 // Re-establish frame after significant actions
-Click on "PURCH1"
-SYS: Switch to Dialog Frame  // Re-establish after stage nav
-Write "Test" in field "Name"
+Click on "Update Incentive"
+SYS: Switch to Dialog Frame  // Re-establish after navigation
+Write "500" in field "Value"
 keyboardShortcut("save")
 SYS: Switch to Dialog Frame  // Re-establish after save
 ```
 
-## Retry Logic for Frame Switches
+## Simple Retry Strategies
 
-### Basic Retry Pattern
-```javascript
-function switchToFrameWithRetry(frameType, maxRetries = 3) {
-    for (let i = 0; i < maxRetries; i++) {
-        try {
-            switch(frameType) {
-                case 'Dialog Frame':
-                    executeCheckpoint('SYS: Switch to Dialog Frame');
-                    break;
-                case 'Desktop Frame':
-                    executeCheckpoint('SYS: Switch to Desktop Frame');
-                    break;
-                case 'getFrame':
-                    executeCheckpoint('SYS: Switch to getFrame');
-                    break;
-            }
-            
-            // Verify switch succeeded
-            wait(1); // Brief pause
-            if (verifyFrameContext()) {
-                return true;
-            }
-        } catch (error) {
-            console.log(`Frame switch attempt ${i + 1} failed: ${error}`);
-            if (i < maxRetries - 1) {
-                wait(2); // Longer wait before retry
-                // Try to reset to known state
-                switchToDefaultContent();
-            }
-        }
-    }
-    return false;
-}
+### When Frame Switch Fails, Try This:
+
+1. **Add a Wait**
+```
+Click on "New Reservation"
+Wait 2 seconds  // Give modal time to open
+SYS: Switch to Dialog Frame
 ```
 
-### Advanced Retry with Context Detection
-```javascript
-function smartFrameSwitch(targetElement, expectedFrame) {
-    // First, try without switching (might already be in correct frame)
-    if (elementExists(targetElement)) {
-        return true;
-    }
-    
-    // Try expected frame
-    if (switchToFrameWithRetry(expectedFrame)) {
-        if (elementExists(targetElement)) {
-            return true;
-        }
-    }
-    
-    // Try alternative frames based on context
-    const alternativeFrames = getAlternativeFrames(expectedFrame);
-    for (const frame of alternativeFrames) {
-        if (switchToFrameWithRetry(frame)) {
-            if (elementExists(targetElement)) {
-                console.log(`Found element in ${frame} instead of ${expectedFrame}`);
-                return true;
-            }
-        }
-    }
-    
-    return false;
-}
-
-function getAlternativeFrames(primaryFrame) {
-    const alternatives = {
-        'Desktop Frame': ['Dialog Frame', 'getFrame'],
-        'Dialog Frame': ['Desktop Frame', 'active inlineframe'],
-        'getFrame': ['getFrame + active inlineframe'],
-        'getFrame + active inlineframe': ['getFrame']
-    };
-    return alternatives[primaryFrame] || [];
-}
+2. **Look for the Element First**
+```
+Click on "New Reservation"
+Look for element "Continue Reservation" on page  // Verify modal opened
+Click on "Continue Reservation"
+SYS: Switch to Dialog Frame
 ```
 
-## Detecting Wrong Frame Context
-
-### Visual Indicators
-```javascript
-// Check for frame-specific elements
-function detectCurrentFrameContext() {
-    const frameIndicators = {
-        'mainWorkspace': 'getFrame',
-        'modalDialog': 'Dialog Frame',
-        'desktopDialog': 'Desktop Frame',
-        'gridContainer': 'getFrame + active inlineframe',
-        'popupWindow': 'active inlineframe'
-    };
-    
-    for (const [element, frame] of Object.entries(frameIndicators)) {
-        if (elementExists(element)) {
-            return frame;
-        }
-    }
-    return 'unknown';
-}
+3. **If Still Failing, Try Multiple Waits**
+```
+Click on "Update Incentive"
+Wait 1 second
+SYS: Switch to Dialog Frame
+Wait 1 second  // Additional wait after switch
+Write "500" in field "Value"
 ```
 
-### Diagnostic Function
-```javascript
-// Add as checkpoint for debugging
-function diagnoseFrameState() {
-    console.log("=== Frame Diagnosis ===");
-    
-    // Check common COINS frames
-    const frames = ['mainarea', 'getFrame', 'inlineframe', 'desktopDialog'];
-    frames.forEach(frame => {
-        const exists = frameExists(frame);
-        console.log(`${frame}: ${exists ? 'Present' : 'Not found'}`);
-    });
-    
-    // Check current URL for context clues
-    const url = getCurrentUrl();
-    if (url.includes('/browse/')) console.log("Context: Browse screen");
-    if (url.includes('/edit/')) console.log("Context: Edit form");
-    if (url.includes('/add/')) console.log("Context: Add form");
-    
-    return true;
-}
+## How to Tell You're in the Wrong Frame
+
+### Visual Clues:
+- ❌ Button visible but nothing happens when clicked
+- ❌ "Element not found" but you can see it on screen
+- ❌ Test was working but suddenly fails
+- ❌ Some elements work, others don't
+
+### Quick Checks in Browser:
+
+1. **The Console Test**
+   - Right-click on the element
+   - Select "Inspect"
+   - In Console, type: `$0.tagName`
+   - If it shows an error, you're in the wrong frame
+
+2. **The URL Check**
+   - Look at your browser URL
+   - `/browse/` = Browse screen (needs getFrame)
+   - `/edit/` = Edit form (needs Dialog Frame)
+   - `/add/` = Add form (needs Dialog Frame)
+
+## Simple Recovery Steps
+
+### When Things Go Wrong:
+
+1. **Close and Start Over**
+```
+// If modal seems broken
+Click on "Cancel" or "Close"
+Wait 2 seconds
+// Try opening modal again
+Click on "New Reservation"
+Look for element "Continue Reservation" on page
+Click on "Continue Reservation"
+SYS: Switch to Dialog Frame
 ```
 
-## Recovery Strategies
-
-### 1. Return to Known State
-```javascript
-function recoverToKnownState() {
-    try {
-        // Try to get back to main workspace
-        switchToDefaultContent();
-        wait(1);
-        
-        // Look for mainarea
-        if (frameExists('mainarea')) {
-            switchToFrame('mainarea');
-            if (frameExists('getFrame')) {
-                switchToFrame('getFrame');
-                return 'Recovered to main workspace';
-            }
-        }
-        
-        // If that fails, try to find any COINS frame
-        const coinsFrames = ['getFrame', 'Container', 'desktopDialog'];
-        for (const frame of coinsFrames) {
-            if (attemptFrameSwitch(frame)) {
-                return `Recovered to ${frame}`;
-            }
-        }
-        
-        return 'Recovery failed';
-    } catch (error) {
-        return `Recovery error: ${error}`;
-    }
-}
+2. **Return to Main Screen**
+```
+// If completely lost
+Click on "House Sales" in menu  // Return to module home
+SYS: Switch to getFrame
+// Start your journey again
 ```
 
-### 2. Modal-Specific Recovery
-```javascript
-function recoverModalContext(modalType = 'Dialog') {
-    // Close and reopen modal
-    try {
-        // Try to close current modal
-        if (elementExists('Close') || elementExists('Cancel')) {
-            click('Close') || click('Cancel');
-            wait(2);
-        }
-        
-        // Return to main and retry
-        recoverToKnownState();
-        
-        // Reopen modal based on type
-        if (modalType === 'NewReservation') {
-            click('New Reservation');
-            click('Continue Reservation');
-            switchToFrameWithRetry('Dialog Frame');
-        }
-        
-        return true;
-    } catch (error) {
-        console.log(`Modal recovery failed: ${error}`);
-        return false;
-    }
-}
+3. **Refresh the Page** (Last Resort)
 ```
-
-### 3. Grid Recovery
-```javascript
-function recoverGridContext() {
-    // Grid operations require specific frame setup
-    try {
-        recoverToKnownState();
-        
-        // Re-establish grid frame context
-        executeCheckpoint('SYS: Switch to getFrame + active inlineframe');
-        
-        // Verify grid is accessible
-        if (elementExists('[data-gridid]') || elementExists('.grid-container')) {
-            return true;
-        }
-        
-        // Try refreshing grid
-        if (elementExists('Refresh')) {
-            click('Refresh');
-            wait(2);
-            return true;
-        }
-        
-        return false;
-    } catch (error) {
-        return false;
-    }
-}
+// Only if nothing else works
+Refresh page
+SYS: Log In sysadmin
+// Navigate back to where you were
 ```
 
 ## Best Practices for Error Prevention
@@ -329,43 +222,44 @@ Look for element "Cancel" on page
 | "Stale element reference" | Frame context changed | Re-establish frame |
 | "Timeout waiting for element" | Wrong frame or slow load | Check frame + increase wait |
 
-## Implementation Example
+## Real Example: Adding an Incentive
 
-```javascript
-// Robust modal operation with error handling
-function safeModalOperation() {
-    try {
-        // Open modal with verification
-        Click on "New Reservation"
-        Wait for element "Continue Reservation" on page  // Verify modal
-        Click on "Continue Reservation"
-        
-        // Switch with retry
-        if (!switchToFrameWithRetry('Dialog Frame', 3)) {
-            throw new Error('Failed to switch to Dialog Frame');
-        }
-        
-        // Verify correct context
-        Look for element "Start Reservation" on page
-        
-        // Perform operations
-        Click on "Start Reservation"
-        
-        // Re-establish frame after action
-        SYS: Switch to Dialog Frame
-        
-        // Continue with form...
-        
-    } catch (error) {
-        console.log(`Modal operation failed: ${error}`);
-        
-        // Attempt recovery
-        recoverModalContext('NewReservation');
-        
-        // Retry or fail gracefully
-        throw error;
-    }
-}
+Here's how to handle frames when things go wrong:
+
+```
+// What should happen:
+Click on "Update Incentive"
+SYS: Switch to Dialog Frame
+Write "500" in field "Value"
+Click on "Save"
+
+// If "Value" field not found, try this:
+Click on "Update Incentive"
+Wait 2 seconds  // Give modal time to open
+Look for element "Incentive Details" on page  // Verify right modal
+SYS: Switch to Dialog Frame
+Wait 1 second  // Let frame settle
+Write "500" in field "Value"
+Click on "Save"
+
+// If still failing:
+Click on "Cancel"  // Close modal
+Wait 2 seconds
+Click on "Update Incentive"  // Try again
+Wait for element "Value" on page  // Wait for specific field
+SYS: Switch to Dialog Frame
+Write "500" in field "Value"
+Click on "Save"
 ```
 
-This guide provides comprehensive error handling for COINS iframe operations, with practical solutions for common failures and robust recovery strategies.
+## Quick Reference Card
+
+| Problem | Solution |
+|---------|----------|
+| Element not found | Add wait before frame switch |
+| Modal blank | Wait for content before switching |
+| Wrong frame | Check breadcrumb in DevTools |
+| Random failures | Re-establish frame after saves |
+| Can see but can't click | You're in wrong frame |
+
+Remember: Most iframe issues are solved by adding waits and verifying elements exist before proceeding.
