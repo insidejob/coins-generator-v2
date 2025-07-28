@@ -4,7 +4,8 @@
 
 **Background dimmed?** → Use `Checkpoint 13: SYS: Switch to Dialog Frame`  
 **Search boxes above table?** → Use `Checkpoint 29: SYS: Switch to getFrame + active inlineframe`  
-**Just a plain table?** → Use `Checkpoint 4: SYS: Switch to getFrame`
+**Just a plain table?** → Use `Checkpoint 4: SYS: Switch to getFrame`  
+**Closing a pop-up?** → Use `SYS: Switch to parent frame` (goes back one level)
 
 ---
 
@@ -56,18 +57,25 @@ That's it! This one question solves 90% of iframe issues.
 START HERE
     │
     ▼
-Is the background dimmed/grayed out?
+Did you just close a pop-up or cancel something?
     │
-    ├─── YES ──→ Use: Checkpoint 13: SYS: Switch to Dialog Frame
+    ├─── YES ──→ Use: SYS: Switch to parent frame
     │
     └─── NO ───→ Continue
                     │
                     ▼
-            Can you type in boxes above the table?
+            Is the background dimmed/grayed out?
                     │
-                    ├─── YES ──→ Use: Checkpoint 29: SYS: Switch to getFrame + active inlineframe
+                    ├─── YES ──→ Use: Checkpoint 13: SYS: Switch to Dialog Frame
                     │
-                    └─── NO ───→ Use: Checkpoint 4: SYS: Switch to getFrame
+                    └─── NO ───→ Continue
+                                    │
+                                    ▼
+                            Can you type in boxes above the table?
+                                    │
+                                    ├─── YES ──→ Use: Checkpoint 29: SYS: Switch to getFrame + active inlineframe
+                                    │
+                                    └─── NO ───→ Use: Checkpoint 4: SYS: Switch to getFrame
 ```
 
 ---
@@ -135,6 +143,30 @@ Background dims ░░░░░░░░░░░░░░
 - New Reservation form
 - Edit screens
 - Add new record dialogs
+
+### 4️⃣ Going Back (Parent Frame)
+
+**When to use parent frame switching:**
+
+```
+You were in a pop-up → You closed it → Need to go back
+                    ↓
+        Use: SYS: Switch to parent frame
+```
+
+**Common scenarios:**
+- After clicking "Cancel" in a pop-up
+- After saving and closing a form
+- When returning from a nested screen
+- After any "back" navigation
+
+**Visual example:**
+```
+Before:                          After Cancel:
+┌─ Pop-up ──────┐               Main Screen
+│ [Save][Cancel]│ → Click →     (Need parent frame
+└───────────────┘   Cancel       to get back here)
+```
 
 ---
 
@@ -262,6 +294,31 @@ Just answer these questions:
 
 ---
 
+## Library Checkpoints
+
+COINS has pre-built checkpoints that handle complex frame switching for you:
+
+### Common Library Checkpoints:
+
+| Checkpoint Name | What It Does | When to Use |
+|----------------|--------------|-------------|
+| `SYS: Switch to getFrame` | Goes to main working area | After module navigation |
+| `SYS: Switch to Dialog Frame` | Enters pop-up windows | When pop-up opens |
+| `SYS: Switch to Desktop Frame` | Enters nested pop-ups | Pop-up inside pop-up |
+| `SYS: Switch to parent frame` | Goes back one level | After closing something |
+| `SYS: Switch to getFrame + active inlineframe` | Complex grid access | Filtered search tables |
+
+### Why Use Library Checkpoints?
+
+Library checkpoints handle multiple steps for you. For example, `SYS: Switch to Dialog Frame` actually does:
+- Switch to parent frame (multiple times)
+- Find the dynamic pop-up frame
+- Navigate to the correct window
+
+**Always prefer library checkpoints** over manual frame switching!
+
+---
+
 ## Quick Reference Card
 
 ### For Tables and Lists
@@ -326,6 +383,33 @@ Wait 2 seconds
 SYS: Switch to Dialog Frame
 Write "John Smith" in field "Name"
 Click on "Save"
+```
+
+### Returning from Pop-up:
+```
+// In a pop-up form
+Click on "Cancel"
+SYS: Switch to parent frame  // Go back to main screen
+// Now you can interact with the main screen again
+```
+
+### Complex Navigation (Multiple Levels):
+```
+// Open first pop-up
+Click on "New Reservation"
+SYS: Switch to Dialog Frame
+
+// Open nested pop-up (like Add Choice)
+Click on "Add Choice"
+SYS: Switch to Desktop Frame
+
+// Close nested pop-up
+Click on "Cancel"
+SYS: Switch to parent frame  // Back to first pop-up
+
+// Close first pop-up
+Click on "Cancel"
+SYS: Switch to parent frame  // Back to main screen
 ```
 
 ---
