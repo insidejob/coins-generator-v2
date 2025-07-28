@@ -2,21 +2,48 @@
 
 ## 🚀 Quick Answer Box
 
+### ⚠️ ALWAYS USE LIBRARY CHECKPOINTS (They handle everything for you!)
+
 **Background dimmed?** → Use `Checkpoint 13: SYS: Switch to Dialog Frame`  
 **Search boxes above table?** → Use `Checkpoint 29: SYS: Switch to getFrame + active inlineframe`  
 **Just a plain table?** → Use `Checkpoint 4: SYS: Switch to getFrame`  
-**Closing a pop-up?** → Use `SYS: Switch to parent frame` (goes back one level)
+**Need to go back?** → Use `SYS: Switch to Container` (returns to previous context)
+
+💡 **Why Library Checkpoints?** They automatically handle all the complex frame switching, making your tests more reliable and easier to maintain!
 
 ---
 
 ## 📋 Table of Contents
 
-1. [What Are COINS Windows?](#what-are-coins-windows)
-2. [The One Rule You Need](#the-one-rule-you-need)
-3. [How to Identify Different COINS Screens](#how-to-identify-different-coins-screens)
-4. [Common Problems and Solutions](#common-problems-and-solutions)
-5. [Step-by-Step Troubleshooting](#step-by-step-troubleshooting)
-6. [Quick Reference Card](#quick-reference-card)
+1. [IMPORTANT: Always Use Library Checkpoints](#important-always-use-library-checkpoints)
+2. [What Are COINS Windows?](#what-are-coins-windows)
+3. [The One Rule You Need](#the-one-rule-you-need)
+4. [How to Identify Different COINS Screens](#how-to-identify-different-coins-screens)
+5. [Common Problems and Solutions](#common-problems-and-solutions)
+6. [Step-by-Step Troubleshooting](#step-by-step-troubleshooting)
+7. [Quick Reference Card](#quick-reference-card)
+
+---
+
+## IMPORTANT: Always Use Library Checkpoints
+
+### 🛑 Before you read anything else, know this:
+
+**ALWAYS use library checkpoints like:**
+- `SYS: Switch to getFrame`
+- `SYS: Switch to Dialog Frame`
+- `SYS: Switch to Container`
+
+**NEVER manually write frame switches like:**
+- `Switch to parent iframe`
+- `Switch iframe to "mainarea"`
+
+**Why?** Library checkpoints:
+- ✅ Handle all complexity for you
+- ✅ Get updated if COINS changes
+- ✅ Include error handling
+- ✅ Make tests easier to maintain
+- ✅ Work across different COINS versions
 
 ---
 
@@ -59,7 +86,7 @@ START HERE
     ▼
 Did you just close a pop-up or cancel something?
     │
-    ├─── YES ──→ Use: SYS: Switch to parent frame
+    ├─── YES ──→ Use: SYS: Switch to Container
     │
     └─── NO ───→ Continue
                     │
@@ -144,14 +171,14 @@ Background dims ░░░░░░░░░░░░░░
 - Edit screens
 - Add new record dialogs
 
-### 4️⃣ Going Back (Parent Frame)
+### 4️⃣ Going Back (Container)
 
-**When to use parent frame switching:**
+**When to return to previous context:**
 
 ```
 You were in a pop-up → You closed it → Need to go back
                     ↓
-        Use: SYS: Switch to parent frame
+        Use: SYS: Switch to Container
 ```
 
 **Common scenarios:**
@@ -164,9 +191,11 @@ You were in a pop-up → You closed it → Need to go back
 ```
 Before:                          After Cancel:
 ┌─ Pop-up ──────┐               Main Screen
-│ [Save][Cancel]│ → Click →     (Need parent frame
+│ [Save][Cancel]│ → Click →     (Need Container
 └───────────────┘   Cancel       to get back here)
 ```
+
+💡 **Note:** `SYS: Switch to Container` is the library checkpoint that handles going back. It's smarter than manual parent frame switching because it knows the right context to return to.
 
 ---
 
@@ -294,9 +323,14 @@ Just answer these questions:
 
 ---
 
-## Library Checkpoints
+## 🌟 Library Checkpoints (USE THESE FIRST!)
 
-COINS has pre-built checkpoints that handle complex frame switching for you:
+### Why Library Checkpoints Are Essential:
+
+1. **They're Smart** - Automatically handle complex frame navigation
+2. **They're Maintained** - If COINS changes, the checkpoint gets updated
+3. **They're Reliable** - Include waits and verification built-in
+4. **They're Simple** - One line instead of multiple manual switches
 
 ### Common Library Checkpoints:
 
@@ -305,17 +339,31 @@ COINS has pre-built checkpoints that handle complex frame switching for you:
 | `SYS: Switch to getFrame` | Goes to main working area | After module navigation |
 | `SYS: Switch to Dialog Frame` | Enters pop-up windows | When pop-up opens |
 | `SYS: Switch to Desktop Frame` | Enters nested pop-ups | Pop-up inside pop-up |
-| `SYS: Switch to parent frame` | Goes back one level | After closing something |
+| `SYS: Switch to Container` | Returns to previous context | After save/cancel/close |
 | `SYS: Switch to getFrame + active inlineframe` | Complex grid access | Filtered search tables |
 
-### Why Use Library Checkpoints?
+### What Library Checkpoints Do Behind the Scenes:
 
-Library checkpoints handle multiple steps for you. For example, `SYS: Switch to Dialog Frame` actually does:
-- Switch to parent frame (multiple times)
-- Find the dynamic pop-up frame
-- Navigate to the correct window
+For example, `SYS: Switch to Dialog Frame` automatically:
+- Waits for the pop-up to fully load
+- Switches through multiple parent frames
+- Finds the correct dynamic frame ID
+- Verifies the switch succeeded
+- Handles any errors
 
-**Always prefer library checkpoints** over manual frame switching!
+**This is why you should ALWAYS use library checkpoints instead of manual switching!**
+
+### When You Might See Manual Switches:
+
+Sometimes you'll see steps like `Switch to parent frame` in test results. This usually means:
+- The library checkpoint is doing it for you
+- It's part of the checkpoint's internal logic
+- You don't need to add these manually
+
+The only time to use `SYS: Switch to Container` directly is when:
+- You've saved and closed a form
+- You've cancelled out of a screen
+- You need to return to where you were before
 
 ---
 
@@ -389,27 +437,34 @@ Click on "Save"
 ```
 // In a pop-up form
 Click on "Cancel"
-SYS: Switch to parent frame  // Go back to main screen
+SYS: Switch to Container  // Go back to previous context
 // Now you can interact with the main screen again
 ```
 
-### Complex Navigation (Multiple Levels):
+### Complex Navigation (Using Library Checkpoints):
 ```
 // Open first pop-up
 Click on "New Reservation"
-SYS: Switch to Dialog Frame
+SYS: Switch to Dialog Frame  // Library checkpoint handles everything
 
-// Open nested pop-up (like Add Choice)
-Click on "Add Choice"
-SYS: Switch to Desktop Frame
+// Work in the form...
+Write "John Smith" in "Name"
+Click on "Save and Close"
 
-// Close nested pop-up
-Click on "Cancel"
-SYS: Switch to parent frame  // Back to first pop-up
+// Return to main screen
+SYS: Switch to Container  // Library checkpoint knows where to go back to
+```
 
-// Close first pop-up
-Click on "Cancel"
-SYS: Switch to parent frame  // Back to main screen
+### Why NOT to use manual frame switching:
+```
+// ❌ DON'T DO THIS (manual switching):
+Switch to parent iframe
+Switch to parent iframe
+Switch iframe to "mainarea"
+Switch iframe to "getFrame"
+
+// ✅ DO THIS INSTEAD (library checkpoint):
+SYS: Switch to getFrame  // One line does it all!
 ```
 
 ---
