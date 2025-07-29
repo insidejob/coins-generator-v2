@@ -1,5 +1,7 @@
 # COINS ERP Iframe Navigation Patterns
 
+> 📌 **Internal Technical Documentation** - This document contains implementation details for AI systems and developers. Business users should refer to the [COINS Navigation Guide](../iframe-guide/COINS_Navigation_Guide.md).
+
 ## Critical Patterns Discovered
 
 ### 1. Filtered Grid Navigation Pattern
