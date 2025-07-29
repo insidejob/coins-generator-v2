@@ -26,7 +26,7 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 ## 2. Inline Frame Pattern (10% of cases)
 
 ### Example: Document Capture with Tabs
-![Inline Frame](./screenshots/iframe_inlineframe.png)
+![Inline Frame](./screenshots/inlineframe.png)
 
 **What you see:**
 - Tab navigation (Batch Maint, Auto Index, Upload)
