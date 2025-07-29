@@ -20,6 +20,7 @@
 - [COINS_IFRAME_REFINED_RULES.md](./COINS_IFRAME_REFINED_RULES.md) - Refined rules from analysis
 
 ### Specialized Topics
+- [COINS_PARENT_FRAME_PATTERNS.md](./COINS_PARENT_FRAME_PATTERNS.md) - Parent frame navigation patterns (NEW)
 - [COINS_STAGE_NAVIGATION_PATTERN.md](./COINS_STAGE_NAVIGATION_PATTERN.md) - Multi-step dialog patterns
 - [COINS_STAGE_NAVIGATION_DIRECT.md](./COINS_STAGE_NAVIGATION_DIRECT.md) - Direct navigation approach
 - [COINS_IFRAME_ERROR_HANDLING_GUIDE.md](./COINS_IFRAME_ERROR_HANDLING_GUIDE.md) - Error handling procedures

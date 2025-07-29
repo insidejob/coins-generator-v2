@@ -76,6 +76,45 @@ Popup windows are easy to spot:
 
 ---
 
+## 🟡 Special Case #3: Parent Frame Navigation (Warning Dialogs)
+
+### What You'll See:
+![Parent Frame Navigation](../../screenshots/parent_frame_warning.png)
+
+This warning dialog shows a complex frame structure:
+- **Blue border** = Mainarea (outer frame)
+- **Red border** = getFrame (middle frame)
+- **Purple border** = Warning dialog (what you need to access)
+
+When you see warning dialogs or confirmation popups like this:
+- "Delete this record? Deletion is permanent and cannot be undone"
+- OK/Cancel buttons in a warning box
+- System confirmation messages
+
+### The Rule:
+**To access the OK button → Use: `SYS: Switch to parent iframe (2x)`**
+
+This navigates "up" through the frame hierarchy:
+1. From getFrame → up to mainarea
+2. From mainarea → up to the dialog level
+
+### Visual Breadcrumb:
+```
+You are here: getFrame
+    ↑ Switch to parent iframe (1st time)
+mainarea
+    ↑ Switch to parent iframe (2nd time)
+Dialog level (can now click OK)
+```
+
+### Common Examples:
+- ⚠️ Delete confirmation dialogs
+- ✓ Save confirmation messages
+- ❌ Error dialog boxes
+- 🔒 Permission warnings
+
+---
+
 ## 🟠 Advanced Pattern: Nested Frames (Rare - 5% of cases)
 
 ### What You'll See:
@@ -103,7 +142,11 @@ Here's how to choose the right pattern:
 ```
 Is it a popup/floating window?
     ↓
-    YES → Use: Dialog Frame
+    YES → Is it a warning/confirmation dialog?
+         ↓
+         YES → Use: Switch to parent iframe (2x)
+         ↓
+         NO → Use: Dialog Frame
     ↓
     NO → Continue...
          ↓
