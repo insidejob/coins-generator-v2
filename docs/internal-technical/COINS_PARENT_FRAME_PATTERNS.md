@@ -10,6 +10,9 @@ Parent frame navigation is required when you need to access elements that exist 
 
 ### Example: Warning Dialog with 2x Parent Navigation
 ![Parent Frame Warning](../../screenshots/parent_frame_warning.png)
+*Note: If image doesn't load, manually add `parent_frame_warning.png` to the screenshots folder*
+
+The image shows a Payroll Employee Maintenance screen with a delete confirmation warning. The frame borders are color-coded to show the hierarchy: blue (mainarea), red (getFrame), and purple (warning dialog).
 
 Frame structure visualization:
 ```

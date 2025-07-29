@@ -80,11 +80,12 @@ Popup windows are easy to spot:
 
 ### What You'll See:
 ![Parent Frame Navigation](../../screenshots/parent_frame_warning.png)
+*Note: If image doesn't load, manually add `parent_frame_warning.png` to the screenshots folder*
 
-This warning dialog shows a complex frame structure:
-- **Blue border** = Mainarea (outer frame)
-- **Red border** = getFrame (middle frame)
-- **Purple border** = Warning dialog (what you need to access)
+The screenshot shows a Payroll Employee Maintenance screen with a "Warning" dialog popup. The complex frame structure is highlighted with colored borders:
+- **Blue border** = Mainarea (outer frame) - encompasses the entire employee details page
+- **Red border** = getFrame (middle frame) - contains the pension records grid
+- **Purple border** = Warning dialog (what you need to access) - the popup with "Delete this record? Deletion is permanent and cannot be undone" message and OK/Cancel buttons
 
 When you see warning dialogs or confirmation popups like this:
 - "Delete this record? Deletion is permanent and cannot be undone"
