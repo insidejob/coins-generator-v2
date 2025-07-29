@@ -1,161 +1,98 @@
-# COINS Iframe Visual Examples - Real Screenshots
+# COINS Iframe Visual Examples - Simplified Guide
 
-## 🖼️ Understanding COINS Frame Structure Through Real Examples
+## 🖼️ One Example Per Frame Type
 
-This guide shows actual COINS screenshots to help you identify which iframe pattern to use.
+This guide shows the three main iframe patterns you'll encounter in COINS.
 
 ---
 
-## 1. Basic getFrame Pattern (Most Common - 85% of cases)
+## 1. Basic getFrame Pattern (85% of cases)
 
-### Example: Document Capture Workbench - Batch List
-![getFrame Example](./screenshots/getFrame.png)
+### Example: General Ledger Grid
+![getFrame Example](./screenshots/getFrame_3.png)
 
 **What you see:**
-- Simple grid/table layout
-- Basic action buttons at bottom (Add, Copy, Open, etc.)
-- NO search fields above the table
-- Standard "Show All" navigation at bottom
+- Standard grid with data
+- Search field at bottom ("Search: Development.Plot")
+- Navigation controls (Advanced, Filter All)
+- Standard COINS layout
 
 **When to use:** `SYS: Switch to getFrame`
 
-**Visual Indicators:**
-- ✅ Plain table/grid
-- ✅ No filter/search boxes above grid
-- ✅ Standard buttons at bottom
-- ❌ No "Search:" field visible above table
+**Key Point:** Even though there's a search field, this still uses basic getFrame!
 
 ---
 
-## 2. getFrame with Tabs Pattern
+## 2. Inline Frame Pattern (10% of cases)
 
-### Example: House Sales - Plot Details View
-![getFrame with Tabs](./screenshots/getFrame_2.png)
-
-**What you see:**
-- Multiple tabs (Summary, Sales, Notes, Plot, etc.)
-- Detailed form view (not a grid)
-- Command bar with action buttons (New, Email, Letter, Print, etc.)
-- Rich content area with multiple sections
-
-**When to use:** `SYS: Switch to getFrame`
-
-**Visual Indicators:**
-- ✅ Tab navigation present
-- ✅ Form/detail view (not grid)
-- ✅ Command bar with actions
-- ❌ Still no search fields above content
-
----
-
-## 3. Inline Frame Pattern (Empty Grid State)
-
-### Example: Document Capture - Empty Batch
-![Inline Frame](./screenshots/inlineframe.png)
+### Example: Document Capture with Tabs
+![Inline Frame](./screenshots/iframe_inlineframe.png)
 
 **What you see:**
-- Empty grid with column headers
 - Tab navigation (Batch Maint, Auto Index, Upload)
-- Grid is ready but contains no data
-- Action buttons below grid
+- Grid area (may be empty or have data)
+- More complex layout with nested content
 
-**When to use:** `SYS: Switch to getFrame` (even though it's an inline frame)
+**When to use:** First `SYS: Switch to getFrame` THEN `SYS: Switch to inlineframe`
 
-**Visual Indicators:**
-- ✅ Empty grid state
-- ✅ Column headers visible
-- ❌ No search capability above grid
-- 📝 Note: This is still treated as basic getFrame
+**Key Point:** This requires TWO frame switches - first to getFrame, then to the inline frame.
 
 ---
 
-## 4. Active Inline Frame Pattern (Complex Grid - 10% of cases)
+## 3. Dialog Frame Pattern (5% of cases)
 
-### Example: House Sales - Sales Workbench with Search
-![Active Inline Frame](./screenshots/inlineframe.active.png)
+### Example: Continue Reservation Modal
+![Dialog Frame](./screenshots/dialogFrame.png)
 
 **What you see:**
-- **🔍 SEARCH FIELD at bottom right** ("Search: Surname" with input box)
-- Filter tabs at top (By Development, By Purchaser, By Provisional)
-- Advanced Search option
-- Grid with customer/purchaser data
-- Can actively search/filter the grid content
+- Modal/popup window
+- Green header bar ("Continue Reservation")
+- Multi-step form (1. Reservation Type, 2. Purchaser, etc.)
+- Background is dimmed/grayed out
 
-**When to use:** `SYS: Switch to getFrame + active inlineframe`
+**When to use:** `SYS: Switch to Dialog Frame`
 
-**Visual Indicators:**
-- ✅ **Search/filter capability** (See "Search: Surname" field at bottom)
-- ✅ Filter tabs present at top
-- ✅ Advanced Search link
-- ✅ Grid has interactive filtering
-- ✅ More complex grid with search functionality
+**Key Point:** Use this when you see a popup/modal with the background dimmed.
 
 ---
 
-## 🎯 Quick Decision Guide
-
-Look at your COINS screen and ask:
-
-### "Can I search/filter the grid data?"
+## 🎯 Simple Decision Flow
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                                                          │
-│  Is there any search/filter functionality?              │
-│  (Check top AND bottom of the grid)                     │
-│                                                          │
-│  YES → Use: getFrame + active inlineframe               │
-│       (Like Sales Workbench with "Search: Surname")     │
-│                                                          │
-│  NO  → Use: getFrame                                    │
-│       (Like Document Capture examples)                  │
-│                                                          │
-└─────────────────────────────────────────────────────────┘
+START
+  │
+  ▼
+Is it a popup/modal? (Background dimmed?)
+  │
+  ├─ YES → Use: SYS: Switch to Dialog Frame
+  │
+  └─ NO → Continue
+           │
+           ▼
+         Try: SYS: Switch to getFrame
+           │
+           ├─ WORKS → Done! (85% of cases)
+           │
+           └─ ERROR → Add: SYS: Switch to inlineframe
 ```
 
 ---
 
-## 📋 Visual Checklist
+## 💡 Key Takeaways
 
-| Screen Element | Basic getFrame | Active Inline Frame |
-|----------------|----------------|---------------------|
-| Grid/Table | ✅ Yes | ✅ Yes |
-| Action buttons | ✅ Bottom only | ✅ Multiple locations |
-| Search functionality | ❌ No | ✅ Yes (anywhere on page) |
-| Filter tabs | ❌ No | ✅ Yes (By Development, etc.) |
-| "Advanced Search" | ❌ No | ✅ Yes |
-| Can filter/search data | ❌ No | ✅ Yes |
-| "Search:" field visible | ❌ No | ✅ Yes (bottom right in example) |
+1. **Start Simple** - Always try `getFrame` first
+2. **Popups are Different** - Use Dialog Frame for modals
+3. **Two-Step Pattern** - Some grids need getFrame THEN inlineframe
+4. **Don't Overcomplicate** - The search field location doesn't determine the pattern
 
 ---
 
-## 💡 Pro Tips
+## 📋 Quick Reference
 
-1. **Don't overthink it** - If you can search above the grid, use active inline frame. Otherwise, use basic getFrame.
+| Pattern | Visual Clue | Checkpoint to Use |
+|---------|-------------|-------------------|
+| Standard Grid | Regular table/form | `SYS: Switch to getFrame` |
+| Complex Grid | Tabs, nested content | `SYS: Switch to getFrame` + `SYS: Switch to inlineframe` |
+| Modal/Popup | Dimmed background | `SYS: Switch to Dialog Frame` |
 
-2. **Tabs don't matter** - Having tabs (like in example 2) doesn't change the pattern. Only the search field matters.
-
-3. **Empty grids** - Even if a grid is empty (example 3), use the same pattern as if it had data.
-
-4. **When in doubt** - Try basic getFrame first. It works 85% of the time.
-
----
-
-## 🚨 Common Mistakes
-
-1. **Mistake**: Using active inline frame just because you see a grid
-   - **Fix**: Only use it if there's a search field above the grid
-
-2. **Mistake**: Switching frames when you see tabs
-   - **Fix**: Tabs don't require special frame handling
-
-3. **Mistake**: Manual frame switching
-   - **Fix**: Always use library checkpoints like `SYS: Switch to getFrame`
-
----
-
-## Next Steps
-
-- For dialog/popup handling, see [Dialog Frame Patterns](./COINS_IFRAME_DIALOG_PATTERNS.md)
-- For error handling, see [Error Recovery Guide](./COINS_IFRAME_ERROR_HANDLING_GUIDE.md)
-- For module-specific patterns, see [Module Adaptive Logic](./COINS_MODULE_ADAPTIVE_LOGIC.md)
+That's it! Three patterns cover everything in COINS.
