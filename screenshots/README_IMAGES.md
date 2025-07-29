@@ -1,8 +1,8 @@
 # Screenshot Instructions
 
-## Missing Images
+## Completed Images
 
-### parent_frame_warning.png
+### ✅ parent_frame_warning.png
 This screenshot should show:
 - A COINS Payroll Employee Maintenance screen
 - The Pensions tab selected
@@ -18,4 +18,4 @@ This image is referenced in:
 - `/docs/iframe-guide/COINS_Navigation_Guide.md`
 - `/docs/internal-technical/COINS_PARENT_FRAME_PATTERNS.md`
 
-Please save the screenshot as `parent_frame_warning.png` in this screenshots folder.
+**Status**: Image has been provided by user. Please save the screenshot as `parent_frame_warning.png` in this screenshots folder using your local file system.

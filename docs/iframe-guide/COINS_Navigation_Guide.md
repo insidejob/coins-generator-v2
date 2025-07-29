@@ -80,7 +80,6 @@ Popup windows are easy to spot:
 
 ### What You'll See:
 ![Parent Frame Navigation](../../screenshots/parent_frame_warning.png)
-*Note: If image doesn't load, manually add `parent_frame_warning.png` to the screenshots folder*
 
 The screenshot shows a Payroll Employee Maintenance screen with a "Warning" dialog popup. The complex frame structure is highlighted with colored borders:
 - **Blue border** = Mainarea (outer frame) - encompasses the entire employee details page
