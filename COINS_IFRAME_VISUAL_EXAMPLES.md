@@ -41,20 +41,38 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 
 ---
 
-## 3. Dialog Frame Pattern (5% of cases)
+## 3. Active Inline Frame Pattern (Sales Workbench - Special Case)
+
+### Example: Sales Workbench with Search
+![Active Inline Frame](./screenshots/inlineframe.active.png)
+
+**What you see:**
+- Filter tabs at top (By Development, By Purchaser, By Provisional)
+- Search field at bottom right ("Search: Surname")
+- Advanced Search option
+- Customer/purchaser data grid
+
+**When to use:** `SYS: Switch to getFrame + active inlineframe`
+
+**Key Point:** This is a special pattern mainly for Sales Workbench - requires the combined checkpoint.
+
+---
+
+## 4. Dialog Frame Pattern (Popups/Modals)
 
 ### Example: Continue Reservation Modal
 ![Dialog Frame](./screenshots/dialogFrame.png)
 
 **What you see:**
-- Modal/popup window
-- Green header bar ("Continue Reservation")
+- Popup window with green title bar
+- Window controls (minimize, maximize, refresh, help, close buttons)
 - Multi-step form (1. Reservation Type, 2. Purchaser, etc.)
-- Background is dimmed/grayed out
+- Draggable/resizable window (notice resize handles)
+- NOT a full-page overlay
 
 **When to use:** `SYS: Switch to Dialog Frame`
 
-**Key Point:** Use this when you see a popup/modal with the background dimmed.
+**Key Point:** Look for the green title bar with window controls - this indicates a COINS dialog frame.
 
 ---
 
@@ -64,28 +82,33 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 START
   │
   ▼
-Is it a popup/modal? (Background dimmed?)
+Is it a popup with green title bar?
   │
   ├─ YES → Use: SYS: Switch to Dialog Frame
   │
   └─ NO → Continue
            │
            ▼
-         Try: SYS: Switch to getFrame
+         Is it Sales Workbench with search?
            │
-           ├─ WORKS → Done! (85% of cases)
+           ├─ YES → Use: SYS: Switch to getFrame + active inlineframe
            │
-           └─ ERROR → Add: SYS: Switch to inlineframe
+           └─ NO → Try: SYS: Switch to getFrame
+                     │
+                     ├─ WORKS → Done! (85% of cases)
+                     │
+                     └─ ERROR → Add: SYS: Switch to inlineframe
 ```
 
 ---
 
 ## 💡 Key Takeaways
 
-1. **Start Simple** - Always try `getFrame` first
-2. **Popups are Different** - Use Dialog Frame for modals
-3. **Two-Step Pattern** - Some grids need getFrame THEN inlineframe
-4. **Don't Overcomplicate** - The search field location doesn't determine the pattern
+1. **Start Simple** - Always try `getFrame` first (85% success rate)
+2. **Green Title Bar = Dialog Frame** - Window controls are the key indicator
+3. **Sales Workbench is Special** - Uses the combined active inlineframe pattern
+4. **Two-Step Pattern** - Some grids need getFrame THEN inlineframe
+5. **Visual Cues Matter** - Look for specific UI elements, not just any search field
 
 ---
 
@@ -93,8 +116,9 @@ Is it a popup/modal? (Background dimmed?)
 
 | Pattern | Visual Clue | Checkpoint to Use |
 |---------|-------------|-------------------|
-| Standard Grid | Regular table/form | `SYS: Switch to getFrame` |
-| Complex Grid | Tabs, nested content | `SYS: Switch to getFrame` + `SYS: Switch to inlineframe` |
-| Modal/Popup | Dimmed background | `SYS: Switch to Dialog Frame` |
+| Standard Grid | Regular table/form, even with search | `SYS: Switch to getFrame` |
+| Nested Content | Tabs with frame borders visible | `SYS: Switch to getFrame` + `SYS: Switch to inlineframe` |
+| Sales Workbench | Filter tabs + search field | `SYS: Switch to getFrame + active inlineframe` |
+| Modal/Popup | Green title bar with window controls | `SYS: Switch to Dialog Frame` |
 
-That's it! Three patterns cover everything in COINS.
+That's it! Four patterns cover everything in COINS.
