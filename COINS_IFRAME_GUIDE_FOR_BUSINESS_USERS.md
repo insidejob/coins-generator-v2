@@ -4,7 +4,7 @@
 
 ### ⚠️ ALWAYS USE LIBRARY CHECKPOINTS (They handle everything for you!)
 
-**Background dimmed?** → Use `Checkpoint 13: SYS: Switch to Dialog Frame`  
+**Popup/modal window?** → Use `Checkpoint 13: SYS: Switch to Dialog Frame`  
 **Search boxes above table?** → Use `Checkpoint 29: SYS: Switch to getFrame + active inlineframe`  
 **Just a plain table?** → Use `Checkpoint 4: SYS: Switch to getFrame`  
 **Need to go back?** → Use `SYS: Switch to Container` (returns to previous context)
@@ -93,7 +93,7 @@ Did you just close a pop-up or cancel something?
     └─── NO ───→ Continue
                     │
                     ▼
-            Is the background dimmed/grayed out?
+            Is it a popup/modal window?
                     │
                     ├─── YES ──→ Use: Checkpoint 13: SYS: Switch to Dialog Frame
                     │
@@ -315,8 +315,8 @@ If still not working:
 
 Just answer these questions:
 
-1. **Is there a gray/dimmed background?**
-   - YES → It's a pop-up → Use `Dialog Frame`
+1. **Is it a popup/modal window?**
+   - YES → It's floating over the main page → Use `Dialog Frame`
    - NO → Continue to question 2
 
 2. **Are there empty boxes above the table where I can type?**

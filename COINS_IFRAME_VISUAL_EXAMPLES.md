@@ -19,6 +19,13 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 
 **When to use:** `SYS: Switch to getFrame`
 
+**Modules that use this pattern:**
+- ✅ General Ledger (GL) - even with search!
+- ✅ Payroll (PR) - 95% of the time
+- ✅ Human Resources (HCM)
+- ✅ Subcontract (SC)
+- ✅ Most standard forms across all modules
+
 **Key Point:** Even though there's a search field, this still uses basic getFrame!
 
 ---
@@ -54,7 +61,13 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 
 **When to use:** `SYS: Switch to getFrame + active inlineframe`
 
-**Key Point:** This is a special pattern mainly for Sales Workbench - requires the combined checkpoint.
+**Modules that consistently use this pattern:**
+- ⚠️ Purchase Ledger (PL) - Most consistent user of extended pattern
+- ⚠️ House Sales - Sales Workbench specifically
+- ⚠️ Purchase Orders (PO) - 72% of the time
+- ⚠️ Sales Ledger (SL) / Accounts Payable (AP) - Complex grids
+
+**Key Point:** This is a special pattern mainly for Sales Workbench and Purchase Ledger - requires the combined checkpoint.
 
 ---
 
@@ -64,15 +77,15 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 ![Dialog Frame](./screenshots/dialogFrame.png)
 
 **What you see:**
-- Popup window with green title bar
-- Window controls (minimize, maximize, refresh, help, close buttons)
-- Multi-step form (1. Reservation Type, 2. Purchaser, etc.)
-- Draggable/resizable window (notice resize handles)
-- NOT a full-page overlay
+- Popup/modal window (separate from main page)
+- Title bar at top (color varies by customer)
+- Usually has close button (X) or similar
+- Content appears in a floating window
+- Can be dragged/moved around screen
 
 **When to use:** `SYS: Switch to Dialog Frame`
 
-**Key Point:** Look for the green title bar with window controls - this indicates a COINS dialog frame.
+**Key Point:** The consistent indicator is that it's a popup/modal window - the styling (colors, buttons, etc.) varies by COINS customer.
 
 ---
 
@@ -82,7 +95,7 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 START
   │
   ▼
-Is it a popup with green title bar?
+Is it a popup/modal window?
   │
   ├─ YES → Use: SYS: Switch to Dialog Frame
   │
@@ -105,7 +118,7 @@ Is it a popup with green title bar?
 ## 💡 Key Takeaways
 
 1. **Start Simple** - Always try `getFrame` first (85% success rate)
-2. **Green Title Bar = Dialog Frame** - Window controls are the key indicator
+2. **Popup/Modal = Dialog Frame** - Floating window is the key indicator
 3. **Sales Workbench is Special** - Uses the combined active inlineframe pattern
 4. **Two-Step Pattern** - Some grids need getFrame THEN inlineframe
 5. **Visual Cues Matter** - Look for specific UI elements, not just any search field
@@ -119,6 +132,14 @@ Is it a popup with green title bar?
 | Standard Grid | Regular table/form, even with search | `SYS: Switch to getFrame` |
 | Nested Content | Tabs with frame borders visible | `SYS: Switch to getFrame` + `SYS: Switch to inlineframe` |
 | Sales Workbench | Filter tabs + search field | `SYS: Switch to getFrame + active inlineframe` |
-| Modal/Popup | Green title bar with window controls | `SYS: Switch to Dialog Frame` |
+| Modal/Popup | Floating window separate from main page | `SYS: Switch to Dialog Frame` |
 
 That's it! Four patterns cover everything in COINS.
+
+---
+
+## 📚 Module-Specific Guide
+
+For detailed module-by-module iframe patterns, see: **[COINS Module Iframe Mapping](./COINS_MODULE_IFRAME_MAPPING.md)**
+
+This shows exactly which modules use which patterns, with confidence levels based on real test data.

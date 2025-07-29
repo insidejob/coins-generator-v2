@@ -136,7 +136,7 @@ findInAllFrames('input[name="Surname"]');
 | **Module Icons** | Large tiles on home | None initially | After click → getFrame |
 | **Menu Items** | Left navigation menu | getFrame | Already in context |
 | **Browse Grids** | Data tables | getFrame + active inlineframe | After setMenu() |
-| **Add Button** | Green + icon | Current → Dialog/Desktop Frame | After click |
+| **Add Button** | + icon | Current → Dialog/Desktop Frame | After click |
 | **Edit Button** | Pencil icon | Current → Dialog/Desktop Frame | After click |
 | **Save Button** | Disk icon | Stay in current | After save → re-establish |
 | **Cancel Button** | X or Cancel text | Current → parent/getFrame | Returns to previous |
