@@ -1,6 +1,6 @@
-# COINS Technical Documentation - Iframe Patterns
+# COINS Internal Technical Documentation - Iframe Patterns
 
-This folder contains detailed technical documentation for COINS iframe patterns, primarily for developers and technical users.
+> ⚠️ **INTERNAL DOCUMENTATION** - This folder contains technical documentation for developers and AI systems to understand COINS implementation details. Business users should use the [Business User Guide](../iframe-guide/COINS_Navigation_Guide.md) instead.
 
 ## 📚 Documentation Index
 
@@ -25,8 +25,9 @@ This folder contains detailed technical documentation for COINS iframe patterns,
 - [COINS_IFRAME_ERROR_HANDLING_GUIDE.md](./COINS_IFRAME_ERROR_HANDLING_GUIDE.md) - Error handling procedures
 - [COINS_IFRAME_VISUAL_TROUBLESHOOTING.md](./COINS_IFRAME_VISUAL_TROUBLESHOOTING.md) - Visual troubleshooting guide
 
-### Legacy/Archive
-- [COINS_IFRAME_GUIDE_FOR_BUSINESS_USERS.md](./COINS_IFRAME_GUIDE_FOR_BUSINESS_USERS.md) - Old business guide (see `/docs/iframe-guide/` for current version)
+### Archived Documentation
+- [archive/](./archive/) - Deprecated or superseded documentation
+  - `COINS_IFRAME_GUIDE_FOR_BUSINESS_USERS.md` - Old business guide (superseded by business-friendly guide)
 
 ## 🎯 For Business Users
 

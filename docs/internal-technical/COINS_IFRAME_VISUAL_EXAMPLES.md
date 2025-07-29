@@ -1,15 +1,17 @@
-# COINS Iframe Visual Examples - Simplified Guide
+# COINS Iframe Visual Examples - Technical Reference
 
-## 🖼️ One Example Per Frame Type
+> 📌 **Internal Technical Documentation** - This document provides technical visual examples for developers. Business users should refer to the [COINS Navigation Guide](../iframe-guide/COINS_Navigation_Guide.md) which includes all necessary visual examples.
 
-This guide shows the three main iframe patterns you'll encounter in COINS.
+## 🖼️ Technical Visual Pattern Reference
+
+This guide provides technical analysis of iframe patterns with visual examples.
 
 ---
 
 ## 1. Basic getFrame Pattern (85% of cases)
 
 ### Example: General Ledger Grid
-![getFrame Example](./screenshots/getFrame_3.png)
+![getFrame Example](../.../../screenshots/getFrame_3.png)
 
 **What you see:**
 - Standard grid with data
@@ -33,7 +35,7 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 ## 2. Inline Frame Pattern (10% of cases)
 
 ### Example: Document Capture with Tabs
-![Inline Frame](./screenshots/inlineframe.png)
+![Inline Frame](../../screenshots/inlineframe.png)
 
 **What you see:**
 - Blue border labeled "getFrame" (outer frame)
@@ -51,7 +53,7 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 ## 3. Active Inline Frame Pattern (Sales Workbench - Special Case)
 
 ### Example: Sales Workbench with Search
-![Active Inline Frame](./screenshots/inlineframe.active.png)
+![Active Inline Frame](../../screenshots/inlineframe.active.png)
 
 **What you see:**
 - Filter tabs at top (By Development, By Purchaser, By Provisional)
@@ -74,7 +76,7 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 ## 4. Dialog Frame Pattern (Popups/Modals)
 
 ### Example: Continue Reservation Modal
-![Dialog Frame](./screenshots/dialogFrame.png)
+![Dialog Frame](../../screenshots/dialogFrame.png)
 
 **What you see:**
 - Popup/modal window (separate from main page)
