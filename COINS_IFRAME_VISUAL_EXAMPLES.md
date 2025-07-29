@@ -29,13 +29,15 @@ This guide shows the three main iframe patterns you'll encounter in COINS.
 ![Inline Frame](./screenshots/inlineframe.png)
 
 **What you see:**
+- Blue border labeled "getFrame" (outer frame)
+- Red border labeled "inlineframe" (inner frame)
 - Tab navigation (Batch Maint, Auto Index, Upload)
-- Grid area (may be empty or have data)
-- More complex layout with nested content
+- Grid area inside the nested frames
+- Visual proof of the two-layer structure
 
 **When to use:** First `SYS: Switch to getFrame` THEN `SYS: Switch to inlineframe`
 
-**Key Point:** This requires TWO frame switches - first to getFrame, then to the inline frame.
+**Key Point:** The colored borders show exactly why you need TWO frame switches - you must navigate through getFrame (blue) to reach inlineframe (red).
 
 ---
 
